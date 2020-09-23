@@ -4,34 +4,28 @@
 
 <t:admin>
     <div class="container-fluid">
-        <h1 style="color: #000; font-weight: 700" class="float-left">Products</h1>
+        <h1 style="color: #000; font-weight: 700" class="float-left">Expired Product</h1>
         <a href="${pageContext.request.contextPath}/ProductController?act=create" class="btn btn-primary float-right">New Product</a>
-        <a href="${pageContext.request.contextPath}/ProductController?act=expired" class="btn btn-primary float-right" style="margin-right: 10px">Expired Products</a>
     </div>
-    
-    
-    <table id="dataList" class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Category</th>
-                <th>Product Code</th>
-                <th>Product Name</th>
-                <th>Retail Price</th>
-                <th>Stock</th>
-                <th>Brand Name</th>
-                <th>Weight</th>
-                <th>Manufactured Date</th>
-                <th>Expiry Date</th>
-                <th>Amount (in grams)</th>
-                <td>Size</th>
-                <th>Gender</th>
-                <th>Description</th>
-                <th colspan="2">Action(s)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <g:forEach items="${allProductsList}" var="pro">
+        <table id="dataList" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Retail Price</th>
+                    <th>Stock</th>
+                    <th>Brand Name</th>
+                    <th>Manufactured Date</th>
+                    <th>Expiry Date</th>
+                    <th>Amount (in grams)</th>
+                    <th>Description</th>
+                    <th>Action(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <g:forEach items="${allExpiredProducts}" var="pro">
                 <tr>
                     <td>${pro.id}</td>
                     <td>${pro.category_id}</td>
@@ -80,32 +74,11 @@
                             </g:otherwise>
                         </g:choose>
                     </td>
-                    <td>
-                        <g:choose>
-                            <g:when test="${pro.size != ''}">
-                                ${pro.size}
-                            </g:when>
-                            <g:otherwise>
-                                --
-                            </g:otherwise>
-                        </g:choose>
-                    </td>
-                    <td>
-                        <g:choose>
-                            <g:when test="${pro.gender != ''}">
-                                ${pro.gender}
-                            </g:when>
-                            <g:otherwise>
-                                --
-                            </g:otherwise>
-                        </g:choose>
-                    </td>
                     <td>${pro.description}</td>
-                    <td><a href="ProductController?id=${pro.id}&act=edit" class="btn btn-danger"><i class="far fa-edit"></i></a></td>
                     <td><a href="ProductController?id=${pro.id}&act=delete" class="btn btn-info" ><i class="far fa-trash-alt"></i></a></td>
                 </tr>
                 
             </g:forEach>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 </t:admin>

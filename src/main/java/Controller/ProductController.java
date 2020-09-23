@@ -80,6 +80,12 @@ public class ProductController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/admin/product/create.jsp");
             request.setAttribute("allCategoriesList", allCategoriesList);
             rd.forward(request, response);
+        }else if(act.equalsIgnoreCase("expired")){
+            ProductDao proDao = new ProductDao();
+            List<Product> allExpiredProducts = proDao.ExpiredProducts();
+            RequestDispatcher rd = request.getRequestDispatcher("/admin/product/expire_product.jsp");
+            request.setAttribute("allExpiredProducts", allExpiredProducts);
+            rd.forward(request, response);
         }
     }
 

@@ -4,11 +4,9 @@
 
 <t:admin>
     <div class="container-fluid">
-        <h1 style="color: #000; font-weight: 700" class="float-left">
-        Products
-        
-    </h1>
+        <h1 style="color: #000; font-weight: 700" class="float-left">Products</h1>
         <a href="${pageContext.request.contextPath}/ProductController?act=create" class="btn btn-primary float-right">New Product</a>
+        <a href="${pageContext.request.contextPath}/ProductController?act=expired" class="btn btn-primary float-right" style="margin-right: 10px">Expired Products</a>
     </div>
     
     

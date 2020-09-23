@@ -7,11 +7,13 @@ package Controller;
 
 import Dao.UserDao;
 import Domain.User;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,9 +31,14 @@ public class LoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse response)
             throws ServletException, IOException {
-    
+        String act = req.getParameter("act");
+        if (act.equalsIgnoreCase("logout")) {
+            HttpSession session = req.getSession();
+            session.setAttribute("username", "");
+            response.sendRedirect("login.jsp");
+        }
     }
 
     /**
@@ -55,8 +62,9 @@ public class LoginController extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
         boolean loginResult = userDao.checkLogin(user);
-        System.out.println(loginResult);
         if(loginResult == true){
+            HttpSession session = req.getSession();
+            session.setAttribute("username", username);
             response.sendRedirect("admin/index.jsp");
         }else{
             System.out.println(loginResult);

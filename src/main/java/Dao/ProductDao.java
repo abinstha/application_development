@@ -7,10 +7,15 @@ package Dao;
 
 import Domain.Product;
 import Util.DbConnect;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +47,7 @@ public class ProductDao {
             pstmt.setString(11, product.getSize());
             pstmt.setString(12, product.getGender());
             pstmt.setDouble(13, product.getWeight());
+            System.out.println(pstmt);
             int rowsInserted = pstmt.executeUpdate();
             if(rowsInserted==1){
                 return true;
@@ -57,8 +63,11 @@ public class ProductDao {
     public List<Product> getAllProducts(){
         List<Product> allProductsList = new ArrayList();
         try{
-            Statement stmt = dbCon.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from products");
+            LocalDate localDate = java.time.LocalDate.now();
+            java.sql.Date date = java.sql.Date.valueOf(localDate);
+            PreparedStatement pstmt = dbCon.conn.prepareStatement("select * from products where expire_date NOT BETWEEN '0002-12-30' and ?");
+            pstmt.setDate(1, date);
+            ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 Product pro = new Product();
                 pro.setId(rs.getInt("id"));
@@ -90,6 +99,8 @@ public class ProductDao {
     public Boolean delete(Product product){
         try{
             PreparedStatement pstmt = dbCon.conn.prepareStatement("delete from products where id=?");
+            
+            
             pstmt.setInt(1, product.getId());
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated == 1)
@@ -162,5 +173,38 @@ public class ProductDao {
             System.out.println(e);
         }
         return pro;
+    }
+    
+    public List<Product> ExpiredProducts(){
+        List<Product> allExpiredProducts = new ArrayList();
+        try{
+            LocalDate localDate = java.time.LocalDate.now();
+            java.sql.Date date = java.sql.Date.valueOf(localDate);
+            PreparedStatement pstmt = dbCon.conn.prepareStatement("select * from products where expire_date BETWEEN '0002-12-30' and ?");
+            pstmt.setDate(1, date);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Product pro = new Product();
+                pro.setId(rs.getInt("id"));
+                pro.setName(rs.getString("name"));
+                pro.setDescription(rs.getString("description"));
+                pro.setStock(rs.getInt("stock"));
+                pro.setCategory_id(rs.getInt("category_id"));
+                pro.setProduct_code(rs.getInt("product_code"));
+                pro.setPrice(rs.getDouble("price"));
+                pro.setBrand_name(rs.getString("brand_name"));
+                pro.setManufacture_date(rs.getDate("manufacture_date"));
+                pro.setExpire_date(rs.getDate("expire_date"));
+                pro.setAmount(rs.getDouble("amount"));
+                
+                allExpiredProducts.add(pro);
+            }   
+            
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return allExpiredProducts;
     }
 }
