@@ -8,4 +8,5 @@ Util\DbConnect.class
 Dao\CategoryDao.class
 Controller\LoginController.class
 Dao\ProductDao.class
+Controller\HomeController.class
 Controller\CategoryController.class
